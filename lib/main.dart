@@ -14,72 +14,44 @@ class MyApp extends StatefulWidget {
 }
 
 class _State extends State<MyApp> {
+  List<String> attgoralista = ['Städa', 'Laga mat', 'fiska'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey,
+        foregroundColor: Colors.black,
         centerTitle: true,
-        title: const Text('TIG169 TODO', style: TextStyle(color: Colors.black)),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.more_vert,
-              color: Colors.black,
-            ),
-            onPressed: () {},
-          ),
+        title: const Text('TIG169 TODO'),
+        actions: <Widget>[
+          PopupMenuButton(
+              icon: const Icon(Icons.more_vert),
+              itemBuilder: (BuildContext context) => [
+                    const PopupMenuItem(
+                      // visa alla
+                      child: Text('Alla'),
+                      value: 1,
+                    ),
+                    const PopupMenuItem(
+                      // sortera efter checked box items
+                      //onTap: ,
+                      child: Text('Avklarade'),
+                      value: 2,
+                    ),
+                    const PopupMenuItem(
+                      // sortera efter unchecked box items
+                      // onTap: ,
+                      child: Text('Kvarvarande'),
+                      value: 3,
+                    )
+                  ])
         ],
       ),
       body: ListView(
-        children: const <Widget>[
-          ListTile(
-            leading: Icon(
-              Icons.check_box,
-              color: Colors.black,
-            ),
-            title: Text(
-              'Städa',
-              style: TextStyle(
-                  decoration: TextDecoration.lineThrough,
-                  color: Colors.black,
-                  fontSize: 20),
-            ),
-            trailing: Icon(Icons.close, color: Colors.black),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.check_box_outline_blank,
-              color: Colors.black,
-            ),
-            title: Text(
-              'Plugga',
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-            trailing: Icon(Icons.close, color: Colors.black),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.check_box_outline_blank,
-              color: Colors.black,
-            ),
-            title: Text(
-              'Laga mat',
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-            trailing: Icon(Icons.close, color: Colors.black),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.check_box_outline_blank,
-              color: Colors.black,
-            ),
-            title: Text(
-              'Betala räkningar',
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-            trailing: Icon(Icons.close, color: Colors.black),
-          )
+        children: <Widget>[
+          attGora('Städa'),
+          attGora('Laga Mat'),
+          attGora('Fiska')
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -97,9 +69,24 @@ class _State extends State<MyApp> {
   }
 }
 
-class SecondView extends StatelessWidget {
+Widget attGora(text) {
+  return ListTile(
+      leading: IconButton(
+        onPressed: () {},
+        icon: const Icon(Icons.check_box_outline_blank),
+      ),
+      title: Text(text),
+      trailing: IconButton(onPressed: () {}, icon: const Icon(Icons.close)));
+}
+
+class SecondView extends StatefulWidget {
   const SecondView({Key? key}) : super(key: key);
 
+  @override
+  _SecondViewState createState() => _SecondViewState();
+}
+
+class _SecondViewState extends State<SecondView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
