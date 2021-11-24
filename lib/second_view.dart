@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'todo_model.dart';
 
 class SecondView extends StatefulWidget {
@@ -7,22 +8,26 @@ class SecondView extends StatefulWidget {
   const SecondView(this.toDo, {Key? key}) : super(key: key);
 
   @override
-  State<SecondView> createState() {
-    return _SecondViewState(toDo);
+  State<StatefulWidget> createState() {
+    return SecondViewState(toDo);
   }
 }
 
-class _SecondViewState extends State<SecondView> {
-  late String titleToDo;
-  TextEditingController textEditingController = TextEditingController();
+class SecondViewState extends State<SecondView> {
+  late String title;
+  late bool done;
 
-  _SecondViewState(ToDoModell toDo) {
-    titleToDo = toDo.titleToDo;
-    textEditingController = TextEditingController(text: toDo.titleToDo);
+  late TextEditingController textEditingController;
+
+  SecondViewState(ToDoModell toDo) {
+    title = toDo.title;
+    done = toDo.done;
+
+    textEditingController = TextEditingController();
 
     textEditingController.addListener(() {
       setState(() {
-        titleToDo = textEditingController.text;
+        title = textEditingController.text;
       });
     });
   }
@@ -32,7 +37,12 @@ class _SecondViewState extends State<SecondView> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('TIG169 TODO'),
+          title: Text('TIG169 TODO', style: GoogleFonts.lora(fontSize: 30.0)),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient:
+                    LinearGradient(colors: [Colors.lightBlue, Colors.orange])),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -52,6 +62,7 @@ class _SecondViewState extends State<SecondView> {
                 ),
               ),
               ElevatedButton.icon(
+                icon: const Icon(Icons.add),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
                   onPrimary: Colors.black,
@@ -63,11 +74,11 @@ class _SecondViewState extends State<SecondView> {
                     Navigator.pop(
                         context,
                         ToDoModell(
-                          titleToDo: titleToDo,
+                          title: title,
+                          done: done,
                         ));
                   }
                 },
-                icon: const Icon(Icons.add),
               )
             ],
           ),

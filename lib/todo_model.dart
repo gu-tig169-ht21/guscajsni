@@ -1,27 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/api.dart';
 
 class ToDoModell {
-  String titleToDo;
-  bool isDone;
+  String title;
+  bool done;
+  String id;
 
-  ToDoModell({required this.titleToDo, this.isDone = false});
+  ToDoModell({required this.title, this.done = false, this.id = ''});
+
+  static Map<String, dynamic> toJson(ToDoModell toDo) {
+    return {'title': toDo.title, 'done': toDo.done, 'id': toDo.id};
+  }
+
+  static ToDoModell fromJson(Map<String, dynamic> json) {
+    return ToDoModell(title: json['title'], done: json['done'], id: json['id']);
+  }
 }
 
-class ToDoListproviderState extends ChangeNotifier {
-  final List<ToDoModell> _list = [];
+class ToDoproviderState extends ChangeNotifier {
+  late List<ToDoModell> _list = [];
   Object _filterBy = 'All';
 
   List<ToDoModell> get list => _list;
-
   Object get filterBy => _filterBy;
 
-  void addToDo(ToDoModell toDo) {
-    _list.add(toDo);
+  Future getList() async {
+    List<ToDoModell> list = await Api.getTodos();
+    _list = list;
     notifyListeners();
   }
 
-  void removeToDo(ToDoModell toDo) {
-    _list.remove(toDo);
+  void addToDo(ToDoModell toDo) async {
+    _list = await Api.add(toDo);
+    notifyListeners();
+  }
+
+  void removeToDo(ToDoModell toDo) async {
+    _list = await Api.remove(toDo.id);
+    notifyListeners();
+  }
+
+  void isDone(ToDoModell toDo, value) async {
+    toDo.done = !toDo.done;
+    await Api.updateTodo(toDo, value);
     notifyListeners();
   }
 

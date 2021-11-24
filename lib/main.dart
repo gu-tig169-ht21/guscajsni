@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/todo_model.dart';
 import 'package:provider/provider.dart';
 import 'home_page.dart';
+import 'todo_model.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (context) => ToDoListproviderState(), child: const MyApp()));
+  var state = ToDoproviderState();
+  state.getList();
+
+  runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,11 +16,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'TODOLIST',
-        theme: ThemeData(
-          primarySwatch: Colors.grey,
-        ),
-        home: const HomePage());
+        debugShowCheckedModeBanner: false, title: 'TODOLIST', home: HomePage());
   }
 }

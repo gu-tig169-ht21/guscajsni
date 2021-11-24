@@ -2,41 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'todo_model.dart';
 
-class ToDoList extends StatefulWidget {
+class ToDoList extends StatelessWidget {
   final List<ToDoModell> list;
-
   const ToDoList(this.list, {Key? key}) : super(key: key);
 
   @override
-  State<ToDoList> createState() => _ToDoListState();
-}
-
-class _ToDoListState extends State<ToDoList> {
-  @override
   Widget build(BuildContext context) {
     return ListView(
-        children: widget.list.map((toDo) => _toDoItem(toDo, context)).toList());
+        children: list.map((toDo) => _toDoItem(toDo, context)).toList());
   }
 
   Widget _toDoItem(toDo, context) {
     return ListTile(
       leading: Checkbox(
-        value: toDo.isDone,
-        onChanged: (bool? value) {
-          setState(() {
-            toDo.isDone = value!;
-          });
-        },
-      ),
-      title: Text(toDo.titleToDo,
+          value: toDo.done,
+          onChanged: (value) {
+            Provider.of<ToDoproviderState>(context, listen: false)
+                .isDone(toDo, value);
+          }),
+      title: Text(toDo.title,
           style: TextStyle(
-              decoration: toDo.isDone
+              decoration: toDo.done
                   ? TextDecoration.lineThrough
                   : TextDecoration.none)),
       trailing: IconButton(
         icon: const Icon(Icons.close),
         onPressed: () {
-          Provider.of<ToDoListproviderState>(context, listen: false)
+          Provider.of<ToDoproviderState>(context, listen: false)
               .removeToDo(toDo);
         },
       ),
