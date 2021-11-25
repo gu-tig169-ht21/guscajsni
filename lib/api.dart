@@ -6,6 +6,7 @@ const key = '2fd670ae-d7b5-4ebe-8b3b-4bc513fe2de9';
 const url = 'https://todoapp-api-pyq5q.ondigitalocean.app';
 
 class Api {
+  //lägg till en todo i api
   static Future<List<ToDoModell>> add(ToDoModell toDo) async {
     Map<String, dynamic> json = ToDoModell.toJson(toDo);
     var bodyString = jsonEncode(json);
@@ -19,6 +20,7 @@ class Api {
     }).toList();
   }
 
+  //ta bort todo från api
   static Future remove(String id) async {
     var response =
         await http.delete(Uri.parse('$url/todos/$id?key=$key&_confirm=true'));
@@ -30,6 +32,7 @@ class Api {
     }).toList();
   }
 
+  //hämta listan från api
   static Future getTodos() async {
     var response = await http.get(Uri.parse('$url/todos?key=$key'));
     String bodyString = response.body;
@@ -40,6 +43,7 @@ class Api {
     }).toList();
   }
 
+  //uppdaterar done i api
   static Future updateTodo(ToDoModell toDo, value) async {
     String toDoid = toDo.id;
     toDo.done = value;

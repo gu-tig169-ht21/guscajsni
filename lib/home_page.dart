@@ -3,10 +3,9 @@ import 'package:provider/provider.dart';
 import 'second_view.dart';
 import 'todo_list.dart';
 import 'todo_model.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,12 +13,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Object filtervalue = 1;
+  //filtervalue används för att kunna visa vilket filtreringsvärde som är valt
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
+              //tog bort min floatingactionbutton och la den uppe i appbaren istället för att den inte ska vara ivägen för
               onPressed: () async {
                 var newToDo = await Navigator.push(
                     context,
@@ -33,59 +34,71 @@ class _HomePageState extends State<HomePage> {
               },
               icon: const Icon(Icons.add)),
           centerTitle: true,
-          title: Text('TIG169 TODO', style: GoogleFonts.lora(fontSize: 20.0)),
+          title: const Text('TIG169 TODO'),
           actions: [
-            DropdownButton(
-              iconEnabledColor: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              dropdownColor: Colors.grey,
-              value: filtervalue,
-              onChanged: (value) {
-                Provider.of<ToDoproviderState>(context, listen: false)
-                    .setFilterBy(value!);
-                setState(() {
-                  filtervalue = value;
-                });
-              },
-              items: [
-                DropdownMenuItem(
-                  child: SizedBox(
-                      width: 70,
-                      child: Text(
-                        'All',
-                        style: GoogleFonts.lora(color: Colors.white),
-                        textAlign: TextAlign.right,
-                      )),
-                  value: 1,
+            ButtonTheme(
+              alignedDropdown: true,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton(
+                  //valde att göra en dropdownn för att kunna visa det valda filtreringsvärdet
+                  iconEnabledColor: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  dropdownColor: Colors.blueGrey,
+                  value: filtervalue,
+                  onChanged: (value) {
+                    Provider.of<ToDoproviderState>(context, listen: false)
+                        .setFilterBy(value!); // filtererar vyn
+                    setState(() {
+                      filtervalue =
+                          value; //byter texten till det valda filtreringsvärdet
+                    });
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                      child: SizedBox(
+                          width: 59,
+                          child: Text(
+                            'All',
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.right,
+                          )),
+                      value: 1,
+                    ),
+                    DropdownMenuItem(
+                      child: SizedBox(
+                          width: 59,
+                          child: Text('Done',
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.right)),
+                      value: 2,
+                    ),
+                    DropdownMenuItem(
+                      child: SizedBox(
+                          width: 59,
+                          child: Text('Undone',
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.right)),
+                      value: 3,
+                    )
+                  ],
                 ),
-                DropdownMenuItem(
-                  child: SizedBox(
-                      width: 70,
-                      child: Text('Done',
-                          style: GoogleFonts.lora(color: Colors.white),
-                          textAlign: TextAlign.right)),
-                  value: 2,
-                ),
-                DropdownMenuItem(
-                  child: SizedBox(
-                      width: 70,
-                      child: Text('Undone',
-                          style: GoogleFonts.lora(color: Colors.white),
-                          textAlign: TextAlign.right)),
-                  value: 3,
-                )
-              ],
+              ),
             )
           ],
           flexibleSpace: Container(
+            //gör appbaren gradient
             decoration: const BoxDecoration(
                 gradient:
-                    LinearGradient(colors: [Colors.lightBlue, Colors.orange])),
+                    LinearGradient(colors: [Colors.lightBlue, Colors.pink])),
           ),
         ),
-        body: Consumer<ToDoproviderState>(
-            builder: (context, state, child) =>
-                ToDoList(_filterList(state.list, state.filterBy))));
+        body: Container(
+          color: Colors.blueGrey[400],
+          child: Consumer<ToDoproviderState>(
+              builder: (context, state, child) =>
+                  ToDoList(_filterList(state.list, state.filterBy))),
+          //visar listan på todos efter filtrering
+        ));
   }
 
   List<ToDoModell> _filterList(list, filterBy) {

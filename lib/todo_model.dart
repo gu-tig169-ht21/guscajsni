@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_first_app/api.dart';
 
 class ToDoModell {
+  //modellen för varje todo
   String title;
   bool done;
   String id;
@@ -18,6 +19,7 @@ class ToDoModell {
 }
 
 class ToDoproviderState extends ChangeNotifier {
+  //providern för todolistan
   late List<ToDoModell> _list = [];
   Object _filterBy = 'All';
 
