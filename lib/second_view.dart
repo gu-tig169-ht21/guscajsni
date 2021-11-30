@@ -8,7 +8,7 @@ class SecondView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return SecondViewState(toDo);
+    return SecondViewState();
   }
 }
 
@@ -16,10 +16,11 @@ class SecondViewState extends State<SecondView> {
   late String title;
   late bool done;
   late String empty = '';
+  late ToDoModell toDo = ToDoModell(title: '');
 
   late TextEditingController textEditingController;
 
-  SecondViewState(ToDoModell toDo) {
+  SecondViewState() {
     title = toDo.title;
     done = toDo.done;
 
